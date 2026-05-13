@@ -52,7 +52,12 @@ class BaseScraper(ABC):
             return []
 
     def _filter_jobs(self, jobs: List[Job]) -> List[Job]:
-        """Filter jobs by keywords and location."""
+        """Filter jobs by keywords and location.
+
+        Subclasses that handle location filtering at the API level
+        (e.g. Workday facets) set self.skip_location_filter = True
+        to avoid double-filtering.
+        """
         filtered = jobs
 
         if self.keywords:
@@ -65,7 +70,7 @@ class BaseScraper(ABC):
                 )
             ]
 
-        if self.locations:
+        if self.locations and not getattr(self, "skip_location_filter", False):
             filtered = [
                 j for j in filtered
                 if any(
