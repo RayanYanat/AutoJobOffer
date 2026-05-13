@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timezone, timedelta
 from typing import List
 from .base import BaseScraper
 from ..models import Job
@@ -21,7 +22,9 @@ class SmartRecruitersScraper(BaseScraper):
 
     def fetch_jobs(self) -> List[Job]:
         cid = self.config["company_id"]
+        max_age = self.config.get("max_age_days", 7)
         url = self.API_BASE.format(cid=cid)
+        cutoff = datetime.now(timezone.utc) - timedelta(days=max_age)
 
         all_jobs = []
         offset = 0
@@ -40,6 +43,16 @@ class SmartRecruitersScraper(BaseScraper):
                 break
 
             for item in content:
+                # Filter by date
+                released = item.get("releasedDate", "")
+                if released:
+                    try:
+                        dt = datetime.fromisoformat(str(released).replace("Z", "+00:00"))
+                        if dt < cutoff:
+                            continue
+                    except (ValueError, TypeError):
+                        pass
+
                 location_parts = []
                 loc = item.get("location", {})
                 if loc.get("city"):

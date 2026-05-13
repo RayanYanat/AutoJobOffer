@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timezone, timedelta
 from typing import List
 from .base import BaseScraper
 from ..models import Job
@@ -20,14 +21,26 @@ class GreenhouseScraper(BaseScraper):
 
     def fetch_jobs(self) -> List[Job]:
         slug = self.config["board_slug"]
+        max_age = self.config.get("max_age_days", 7)
         url = self.API_BASE.format(slug=slug)
 
         resp = self.session.get(url, params={"content": "true"}, timeout=15)
         resp.raise_for_status()
         data = resp.json()
 
+        cutoff = datetime.now(timezone.utc) - timedelta(days=max_age)
+
         jobs = []
         for item in data.get("jobs", []):
+            # Filter by date
+            updated = item.get("updated_at", "")
+            if updated:
+                try:
+                    dt = datetime.fromisoformat(updated.replace("Z", "+00:00"))
+                    if dt < cutoff:
+                        continue
+                except (ValueError, TypeError):
+                    pass
             location_name = ""
             if item.get("location"):
                 location_name = item["location"].get("name", "")

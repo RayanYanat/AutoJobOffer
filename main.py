@@ -43,6 +43,7 @@ def main():
     parser.add_argument("--stats", action="store_true", help="Show database stats")
     parser.add_argument("--loop", type=int, metavar="MINUTES", help="Run every N minutes")
     parser.add_argument("--no-notify", action="store_true", help="Run without sending notifications")
+    parser.add_argument("--seed", action="store_true", help="First run: scan all jobs and save to DB without notifying")
     args = parser.parse_args()
 
     # Load config
@@ -80,7 +81,14 @@ def main():
         return
 
     # Init engine
-    engine = JobEngine(config, db, notifier)
+    silent = args.seed or args.no_notify
+    engine = JobEngine(config, db, notifier, silent=silent)
+
+    if args.seed:
+        logger.info("SEED MODE: saving all current jobs to DB without notifying...")
+        checked, new, errors = engine.run()
+        logger.info(f"Seed complete. {new} jobs saved. Future scans will only notify for NEW postings.")
+        return
 
     if args.loop:
         interval = args.loop * 60

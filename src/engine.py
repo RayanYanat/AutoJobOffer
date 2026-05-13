@@ -12,12 +12,14 @@ logger = logging.getLogger(__name__)
 class JobEngine:
     """Main orchestration engine — runs all scrapers, deduplicates, notifies."""
 
-    def __init__(self, config: dict, db: JobDatabase, notifier: TelegramNotifier):
+    def __init__(self, config: dict, db: JobDatabase, notifier: TelegramNotifier, silent: bool = False):
         self.config = config
         self.db = db
         self.notifier = notifier
+        self.silent = silent  # If True, don't send notifications (seed mode)
         self.global_keywords = config.get("keywords", [])
         self.global_locations = config.get("locations", [])
+        self.global_max_age = config.get("max_age_days", 7)
         self.delay_between_sources = config.get("delay_between_sources", 2)
 
     def run(self) -> Tuple[int, int, List[str]]:
@@ -51,6 +53,8 @@ class JobEngine:
                     scraper_config["keywords"] = self.global_keywords
                 if not scraper_config.get("locations"):
                     scraper_config["locations"] = self.global_locations
+                if "max_age_days" not in scraper_config:
+                    scraper_config["max_age_days"] = self.global_max_age
 
                 # Instantiate and run scraper
                 scraper_cls = SCRAPER_MAP[scraper_type]
@@ -70,7 +74,8 @@ class JobEngine:
 
                 if new_jobs:
                     logger.info(f"[{name}] {len(new_jobs)} NEW jobs found!")
-                    self.notifier.send_new_jobs(new_jobs)
+                    if not self.silent:
+                        self.notifier.send_new_jobs(new_jobs)
                     self.db.mark_as_seen(new_jobs)
                     total_new += len(new_jobs)
                 else:

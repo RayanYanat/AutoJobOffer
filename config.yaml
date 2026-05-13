@@ -50,6 +50,7 @@ locations:
   - La Défense
 
 delay_between_sources: 2  # seconds between each company scrape
+max_age_days: 7  # ignore job postings older than this
 
 companies:
   # ========================
