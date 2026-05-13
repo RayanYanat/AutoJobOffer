@@ -4,7 +4,16 @@ on:
   schedule:
     # Toutes les 30 minutes, du lundi au vendredi, de 7h à 22h (UTC+1)
     - cron: "*/30 6-21 * * 1-5"
-  workflow_dispatch:  # Permet de lancer manuellement
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Mode d'exécution"
+        required: false
+        default: "normal"
+        type: choice
+        options:
+          - normal
+          - seed
 
 jobs:
   scan:
@@ -35,7 +44,12 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python main.py
+        run: |
+          if [ "${{ github.event.inputs.mode }}" = "seed" ]; then
+            python main.py --seed
+          else
+            python main.py
+          fi
 
       - name: Save job database
         if: always()
