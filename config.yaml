@@ -1,0 +1,540 @@
+# ============================================================================
+# AutoJobOffer — Configuration
+# ============================================================================
+# Global keywords and locations are used for ALL companies unless overridden.
+#
+# IMPORTANT: Les URLs Workday (base_url, company_slug, site) doivent être
+# vérifiées. Lance `python verify_sources.py` pour tester chaque source.
+# ============================================================================
+
+keywords:
+  - analyst
+  - analyste
+  - finance
+  - financier
+  - risk
+  - trading
+  - M&A
+  - advisory
+  - investment banking
+  - structuration
+  - quant
+  - portfolio
+  - asset management
+  - private equity
+  - wealth management
+  - corporate finance
+  - credit
+  - compliance
+  - audit
+  - treasury
+
+locations:
+  - Paris
+  - London
+  - Londres
+  - Geneva
+  - Genève
+  - Zurich
+  - Zürich
+  - Frankfurt
+  - Madrid
+  - Milan
+  - Milano
+  - Amsterdam
+  - Brussels
+  - Bruxelles
+  - Luxembourg
+  - Dublin
+  - Île-de-France
+  - La Défense
+
+delay_between_sources: 2  # seconds between each company scrape
+
+companies:
+  # ========================
+  # BANQUES FRANCAISES
+  # ========================
+
+  - name: BNP Paribas
+    scraper: careers_page
+    # BNP utilise Taleo (bnpparibasgt.taleo.net) + portail groupe
+    careers_url: https://group.bnpparibas/en/careers/all-job-offers
+    enabled: true
+
+  - name: Crédit Agricole
+    scraper: careers_page
+    careers_url: https://recrutement.credit-agricole.fr/offres-emploi
+    search_param: keyword
+    enabled: true
+
+  - name: Société Générale
+    scraper: careers_page
+    careers_url: https://careers.societegenerale.com/en/search
+    enabled: true
+
+  - name: Groupe BPCE
+    scraper: careers_page
+    careers_url: https://recrutement.bpce.fr/offres
+    search_param: q
+    enabled: true
+
+  - name: Crédit Mutuel
+    scraper: careers_page
+    careers_url: https://www.creditmutuel.fr/groupe/fr/recrutement/offres.html
+    enabled: true
+
+  - name: La Banque Postale
+    scraper: careers_page
+    careers_url: https://recrutement.labanquepostale.fr/nos-offres/
+    search_param: q
+    enabled: true
+
+  - name: CIC
+    scraper: careers_page
+    careers_url: https://www.cic.fr/fr/banques/recrutement/offres-emploi.html
+    enabled: true
+
+  - name: LCL
+    scraper: careers_page
+    careers_url: https://recrutement.lcl.fr/offres
+    search_param: q
+    enabled: true
+
+  - name: Arkéa
+    scraper: careers_page
+    careers_url: https://www.arkea.com/recrutement/nos-offres
+    enabled: true
+
+  - name: Banque Palatine
+    scraper: careers_page
+    careers_url: https://www.palatine.fr/recrutement
+    enabled: true
+
+  - name: Banque Transatlantique
+    scraper: careers_page
+    careers_url: https://www.banquetransatlantique.com/fr/recrutement.html
+    enabled: true
+
+  - name: Neuflize OBC
+    scraper: careers_page
+    careers_url: https://www.neuflize-obc.fr/recrutement
+    enabled: true
+
+  - name: Hottinguer
+    scraper: careers_page
+    careers_url: https://www.hottinguer.com/carrieres
+    enabled: true
+
+  - name: Richelieu
+    scraper: careers_page
+    careers_url: https://www.richelieugroup.com/carrieres
+    enabled: true
+
+  # ========================
+  # BANQUES AMERICAINES
+  # ========================
+
+  - name: JP Morgan
+    scraper: oracle_hcm
+    base_url: jpmc.fa.oraclecloud.com
+    site_id: CX_1001
+    enabled: true
+
+  - name: Goldman Sachs
+    scraper: careers_page
+    careers_url: https://higher.gs.com/roles
+    # GS utilise un portail custom (higher.gs.com) + Taleo
+    enabled: true
+
+  - name: Morgan Stanley
+    scraper: workday
+    base_url: ms.wd5.myworkdayjobs.com
+    company_slug: ms
+    site: External
+    enabled: true
+
+  - name: Bank of America
+    scraper: workday
+    base_url: ghr.wd1.myworkdayjobs.com
+    company_slug: ghr
+    site: Lateral-US
+    enabled: true
+
+  - name: Citigroup
+    scraper: workday
+    base_url: citi.wd5.myworkdayjobs.com
+    company_slug: citi
+    site: 2
+    enabled: true
+
+  - name: Wells Fargo
+    scraper: careers_page
+    careers_url: https://www.wellsfargojobs.com/en/jobs/
+    search_param: keyword
+    enabled: true
+
+  - name: US Bank
+    scraper: careers_page
+    careers_url: https://careers.usbank.com/global/en/search-results
+    search_param: keywords
+    enabled: true
+
+  - name: PNC Financial
+    scraper: workday
+    base_url: pnc.wd5.myworkdayjobs.com
+    company_slug: pnc
+    site: External
+    enabled: true
+
+  - name: Truist
+    scraper: workday
+    base_url: truist.wd1.myworkdayjobs.com
+    company_slug: truist
+    site: Careers
+    enabled: true
+
+  - name: Capital One
+    scraper: workday
+    base_url: capitalone.wd12.myworkdayjobs.com
+    company_slug: capitalone
+    site: Capital_One
+    enabled: true
+
+  - name: Jefferies
+    scraper: careers_page
+    careers_url: https://careers.jefferies.com/search
+    search_param: q
+    enabled: true
+
+  - name: Evercore
+    scraper: careers_page
+    careers_url: https://www.evercore.com/careers/
+    enabled: true
+
+  - name: Moelis & Company
+    scraper: careers_page
+    careers_url: https://www.moelis.com/careers/open-positions
+    enabled: true
+
+  # ========================
+  # BANQUES SUISSES
+  # ========================
+
+  - name: UBS
+    scraper: careers_page
+    # UBS utilise Taleo (jobs.ubs.com) — pas de Workday
+    careers_url: https://jobs.ubs.com/TGnewUI/Search/home/Home?partnerid=25008&siteid=5012
+    enabled: true
+
+  - name: Credit Suisse
+    # Intégré dans UBS — les offres apparaissent sur le portail UBS
+    scraper: careers_page
+    careers_url: https://jobs.ubs.com/TGnewUI/Search/home/Home?partnerid=25008&siteid=5012
+    enabled: false  # Doublon avec UBS
+
+  - name: Julius Baer
+    scraper: smartrecruiters
+    company_id: JuliusBaer
+    enabled: true
+
+  - name: ISP Group
+    scraper: careers_page
+    careers_url: https://www.ispgroup.ch/careers
+    enabled: true
+
+  - name: Pictet
+    scraper: careers_page
+    careers_url: https://www.group.pictet/careers/openings
+    enabled: true
+
+  - name: Lombard Odier
+    scraper: careers_page
+    careers_url: https://www.lombardodier.com/careers/open-positions.html
+    enabled: true
+
+  - name: Banque Cantonale de Genève
+    scraper: careers_page
+    careers_url: https://www.bcge.ch/emplois
+    enabled: true
+
+  - name: Vontobel
+    scraper: careers_page
+    careers_url: https://careers.vontobel.com/en/jobs/
+    enabled: true
+
+  - name: EFG International
+    scraper: careers_page
+    careers_url: https://www.efginternational.com/careers.html
+    enabled: true
+
+  # ========================
+  # BANQUES ALLEMANDES
+  # ========================
+
+  - name: Deutsche Bank
+    scraper: workday
+    base_url: db.wd3.myworkdayjobs.com
+    company_slug: db
+    site: DBWebsite
+    enabled: true
+
+  - name: Commerzbank
+    scraper: careers_page
+    careers_url: https://jobs.commerzbank.com/search/
+    search_param: q
+    enabled: true
+
+  - name: DZ Bank
+    scraper: careers_page
+    careers_url: https://karriere.dzbank.de/stellenangebote
+    enabled: true
+
+  - name: KfW
+    scraper: careers_page
+    careers_url: https://www.kfw.de/KfW-Konzern/Karriere/Stellenangebote/
+    enabled: true
+
+  # ========================
+  # BANQUES UK
+  # ========================
+
+  - name: HSBC
+    scraper: careers_page
+    careers_url: https://mycareer.hsbc.com/en_GB/external/SearchJobs
+    search_param: keyword
+    enabled: true
+
+  - name: Barclays
+    scraper: careers_page
+    careers_url: https://search.jobs.barclays/search-jobs
+    search_param: keywords
+    enabled: true
+
+  - name: Lloyds Banking Group
+    scraper: careers_page
+    careers_url: https://www.lloydsbankinggroup.com/careers/search-and-apply.html
+    enabled: true
+
+  - name: NatWest
+    scraper: workday
+    base_url: rbs.wd3.myworkdayjobs.com
+    company_slug: rbs
+    site: RBS
+    enabled: true
+
+  - name: Standard Chartered
+    scraper: careers_page
+    careers_url: https://www.sc.com/en/careers/
+    enabled: true
+
+  # ========================
+  # BANQUES ESPAGNOLES
+  # ========================
+
+  - name: Santander
+    scraper: workday
+    base_url: santander.wd3.myworkdayjobs.com
+    company_slug: santander
+    site: SantanderCareers
+    enabled: true
+
+  - name: BBVA
+    scraper: careers_page
+    careers_url: https://careers.bbva.com/search/
+    search_param: q
+    enabled: true
+
+  - name: CaixaBank
+    scraper: careers_page
+    careers_url: https://www.caixabank.com/en/careers.html
+    enabled: true
+
+  - name: Sabadell
+    scraper: careers_page
+    careers_url: https://www.bancsabadell.com/careers
+    enabled: true
+
+  # ========================
+  # BANQUES ITALIENNES
+  # ========================
+
+  - name: Intesa Sanpaolo
+    scraper: careers_page
+    careers_url: https://jobs.intesasanpaolo.com/search/
+    search_param: q
+    enabled: true
+
+  - name: UniCredit
+    scraper: careers_page
+    careers_url: https://www.unicreditgroup.eu/en/careers.html
+    enabled: true
+
+  - name: Banco BPM
+    scraper: careers_page
+    careers_url: https://www.bancobpm.it/lavora-con-noi/posizioni-aperte/
+    enabled: true
+
+  # ========================
+  # BANQUES NEERLANDAISES
+  # ========================
+
+  - name: ING
+    scraper: careers_page
+    careers_url: https://www.ing.jobs/global/en.htm
+    enabled: true
+
+  - name: ABN AMRO
+    scraper: careers_page
+    careers_url: https://www.abnamro.com/en/careers
+    enabled: true
+
+  - name: Rabobank
+    scraper: careers_page
+    careers_url: https://www.rabobank.jobs/en/
+    enabled: true
+
+  # ========================
+  # BANQUES D'AFFAIRES / BOUTIQUES FRANCAISES
+  # ========================
+
+  - name: Rothschild & Co
+    scraper: workday
+    base_url: rothschildandco.wd3.myworkdayjobs.com
+    company_slug: rothschildandco
+    site: Rothschildandco_Lateral
+    enabled: true
+
+  - name: Lazard France
+    scraper: careers_page
+    # Lazard utilise Taleo (lazard-careers.tal.net)
+    careers_url: https://www.lazard.com/careers/jobs/
+    enabled: true
+
+  - name: Oddo BHF
+    scraper: careers_page
+    careers_url: https://careers.oddo-bhf.com/offres-emploi/
+    enabled: true
+
+  - name: Edmond de Rothschild
+    scraper: careers_page
+    careers_url: https://www.edmond-de-rothschild.com/en/careers/job-offers
+    enabled: true
+
+  - name: BPI France
+    scraper: careers_page
+    careers_url: https://recrutement.bpifrance.fr/offres-emploi
+    search_param: q
+    enabled: true
+
+  - name: CPR Asset Management
+    scraper: careers_page
+    careers_url: https://www.cpr-am.fr/recrutement
+    enabled: true
+
+  # ========================
+  # ASSET MANAGERS / PE / HEDGE FUNDS
+  # ========================
+
+  - name: BlackRock
+    scraper: workday
+    base_url: blackrock.wd1.myworkdayjobs.com
+    company_slug: blackrock
+    site: BlackRock_Professional
+    enabled: true
+
+  - name: Vanguard
+    scraper: workday
+    base_url: vanguard.wd5.myworkdayjobs.com
+    company_slug: vanguard
+    site: vanguard_external
+    enabled: true
+
+  - name: Invesco
+    scraper: workday
+    base_url: invesco.wd1.myworkdayjobs.com
+    company_slug: invesco
+    site: IVZ
+    enabled: true
+
+  - name: PIMCO
+    scraper: workday
+    base_url: pimco.wd1.myworkdayjobs.com
+    company_slug: pimco
+    site: pimco-careers
+    enabled: true
+
+  - name: KKR
+    scraper: careers_page
+    # KKR Greenhouse board is sandbox only — use main careers page
+    careers_url: https://www.kkr.com/careers/career-opportunities
+    enabled: true
+
+  - name: Blackstone
+    scraper: workday
+    base_url: blackstone.wd1.myworkdayjobs.com
+    company_slug: blackstone
+    site: Blackstone_Careers
+    enabled: true
+
+  - name: Carlyle Group
+    scraper: careers_page
+    careers_url: https://www.carlyle.com/careers
+    enabled: true
+
+  - name: Amundi
+    scraper: careers_page
+    careers_url: https://careers.amundi.com/search/
+    search_param: q
+    enabled: true
+
+  - name: Allianz Global Investors
+    scraper: careers_page
+    careers_url: https://careers.allianz.com/search/
+    search_param: q
+    enabled: true
+
+  - name: Ardian
+    scraper: workday
+    base_url: ardian.wd103.myworkdayjobs.com
+    company_slug: ardian
+    site: ArdianCareers
+    enabled: true
+
+  - name: PAI Partners
+    scraper: careers_page
+    careers_url: https://www.paipartners.com/careers/
+    enabled: true
+
+  - name: Schroders
+    scraper: workday
+    base_url: spw.wd3.myworkdayjobs.com
+    company_slug: spw
+    site: spw_careers
+    enabled: true
+
+  - name: LBO France
+    scraper: careers_page
+    careers_url: https://www.lbofrance.com/carrieres
+    enabled: true
+
+  - name: Eurazeo
+    scraper: careers_page
+    careers_url: https://www.eurazeo.com/en/careers
+    enabled: true
+
+  - name: Cathay Capital
+    scraper: careers_page
+    careers_url: https://www.cathaycapital.com/careers
+    enabled: true
+
+  - name: Idinvest Partners
+    scraper: careers_page
+    # Idinvest est devenu Eurazeo (branche mid-market)
+    careers_url: https://www.eurazeo.com/en/careers
+    enabled: true
+
+  - name: Siparex
+    scraper: careers_page
+    careers_url: https://www.siparex.com/fr/recrutement
+    enabled: true

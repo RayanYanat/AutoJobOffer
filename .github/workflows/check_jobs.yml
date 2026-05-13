@@ -1,0 +1,45 @@
+name: Job Alert Scanner
+
+on:
+  schedule:
+    # Toutes les 30 minutes, du lundi au vendredi, de 7h à 22h (UTC+1)
+    - cron: "*/30 6-21 * * 1-5"
+  workflow_dispatch:  # Permet de lancer manuellement
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore job database
+        uses: actions/cache@v4
+        with:
+          path: jobs.db
+          key: jobs-db-${{ github.run_id }}
+          restore-keys: jobs-db-
+
+      - name: Run scanner
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python main.py
+
+      - name: Save job database
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: jobs.db
+          key: jobs-db-${{ github.run_id }}
