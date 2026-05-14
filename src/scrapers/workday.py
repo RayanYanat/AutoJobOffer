@@ -126,7 +126,7 @@ class WorkdayScraper(BaseScraper):
                     continue
 
                 external_path = p.get("externalPath", "")
-                job_url = f"https://{base_url}{external_path}"
+                job_url = f"https://{base_url}/en-US/{site}{external_path}"
 
                 job = Job(
                     job_id=external_path.split("/")[-1] if "/" in external_path else self.generate_id(
